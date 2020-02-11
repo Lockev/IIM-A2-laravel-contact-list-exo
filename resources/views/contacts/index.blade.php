@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- TODO href de la balise <a> pour pointer vers la route de création de contact -->
-                <a class="btn btn-primary float-right" href="#">Ajouter un contact</a>
+                <a class="btn btn-primary float-right mb-3" href="/contacts/create">Ajouter un contact</a>
             </div>
         </div>
         <div class="row">
@@ -21,29 +21,28 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- TODO : Début de la boucle -->
+                    @forelse ($contacts as $contact)
                     <tr>
-                        <td><!-- TODO Afficher l'id du contact --></td>
-                        <td><!-- TODO Afficher le nom du contact --></td>
-                        <td><!-- TODO Afficher le tel du contact --></td>
-                        <td><!-- TODO Afficher l'email du contact --></td>
+                        <td>{{$contact->id}}</td>
+                        <td>{{$contact->name}}</td>
+                        <td>{{$contact->tel}}</td>
+                        <td>{{$contact->email}}</td>
                         <td>
-                            <!-- TODO href de la balise <a> pour pointer vers la route de modification du contact -->
-                            <a class="btn btn-primary" href="#">Modifier</a>
+                            <a class="btn btn-primary" href="{{route('contacts.edit', ['contact' => $contact])}}">Modifier</a>
 
-
-                            <a class="btn btn-danger"
-                               onclick="document.getElementById('delete-form-{{$contact->id}}').submit()">Supprimer</a>
-                            <form id="delete-form-{{$contact->id}}">
-                                <!-- TODO Form pour la suppression d'un contact -->
+                            <a class="btn btn-danger" style="color:#fff"
+                              onclick="document.getElementById('delete-form-{{$contact->id}}').submit()">Supprimer</a>
+                            <form id="delete-form-{{$contact->id}}" method="post" action="{{route('contacts.destroy', ['contact' => $contact])}}">
+                              @csrf
+                              @method("delete")
                             </form>
                         </td>
                     </tr>
-                    <!-- TODO : Conditions pas de contact -->
+                    @empty 
                     <tr>
                         <td>Vous n'avez pas encore de contact</td>
                     </tr>
-                    <!-- TODO : FIN Boucle -->
+                    @endforelse
                     </tbody>
                 </table>
             </div>
